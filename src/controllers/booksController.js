@@ -39,6 +39,18 @@ module.exports = {
         }
     },
 
+    async getBooks(req, res) {
+        try {
+            const books = await knex
+                .from('books')
+                .select('titulo')
+            
+            return res.status(200).json(books)
+        } catch (error) {
+            return res.status(404).json({ message: "not found" })
+        }
+    },
+
     async updateBook(req, res) {
         const { id } = req.params
         const { titulo, autores, editora, foto } = req.body
@@ -60,13 +72,13 @@ module.exports = {
         try {
 
             const deletedBook = await knex('books')
-            .where({ id })
-            .del()
+                .where({ id })
+                .del()
 
-            return res.status(201).json({message: "livro deletado"})
+            return res.status(201).json({ message: "livro deletado" })
 
-        }catch(error) {
-            return res.status(404).json({message: "not found"})
+        } catch (error) {
+            return res.status(404).json({ message: "not found" })
         }
     }
 }
